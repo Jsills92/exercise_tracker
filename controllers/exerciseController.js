@@ -26,4 +26,50 @@ const addExercise = async (req, res) => {
     }
 };
 
-module.exports = { getExercises, addExercise };
+//Delete a new exercise
+
+
+const deleteExercise = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('DELETE FROM exercises WHERE id = $1 RETURNING *', [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Exercise not found' });
+        }
+
+        res.json({ message: 'Exercise deleted successfully', deletedExercise: result.rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const updateExercise = async (req, res) => {
+    const { id } = req.params;
+    const { description, duration, date } = req.body;
+
+    if (!description || !duration || !date) {
+        return res.status(400).json({ message: 'Description, duration, and date are required' });
+    }
+
+    try {
+        const result = await pool.query(
+            'UPDATE exercises SET description = $1, duration = $2, date = $3 WHERE id = $4 RETURNING *',
+            [description, duration, date, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Exercise not found' });
+        }
+
+        res.json({ message: 'Exercise updated successfully', updatedExercise: result.rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+
+module.exports = { getExercises, addExercise, deleteExercise, updateExercise };

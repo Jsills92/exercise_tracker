@@ -1,0 +1,27 @@
+### Get all exercises (GET request)
+GET http://localhost:5000/api/exercises
+Content-Type: application/json
+Accept: application/json
+
+### Add a new exercise (POST request)
+POST http://localhost:5000/api/exercises
+Content-Type: application/json
+Accept: application/json
+
+### Delete an exercise (DELETE request)
+DELETE  http://localhost:5000/api/exercises/7
+Content-Type: application/json
+Accept: application/json
+
+### Update an exercise (PUT request)
+PUT   http://localhost:5000/api/exercises/6
+Content-Type: application/json
+Accept: application/json
+
+{
+  "user_id": 1,
+  "description": "Updated Cycling",
+  "duration": 60,
+  "date": "2025-03-27"
+}
+
