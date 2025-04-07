@@ -10,10 +10,27 @@ const getExercises = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+// Get exercise by user
+const getExercisesByUser = async (req, res) => {
+    const { user_id } = req.params;
+    
+    try {
+        const result = await pool.query(
+            'SELECT * FROM exercises WHERE user_id = $1',
+            [user_id]
+        );
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
 
 //Add a new exercise
 const addExercise = async (req, res) => {
-    const { user_id, description, duration } = req.body;
+    const { user_id } = req.params;  // Extract user_id from the route parameters
+    const { description, duration } = req.body; // user_id will come from the URL
+
     try {
         const result = await pool.query(
             'INSERT INTO exercises (user_id, description, duration) VALUES ($1, $2, $3) RETURNING *',
@@ -25,6 +42,7 @@ const addExercise = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
 
 //Delete a new exercise
 
@@ -72,4 +90,4 @@ const updateExercise = async (req, res) => {
 
 
 
-module.exports = { getExercises, addExercise, deleteExercise, updateExercise };
+module.exports = { getExercises, getExercisesByUser, addExercise, deleteExercise, updateExercise };

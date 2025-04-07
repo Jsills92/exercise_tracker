@@ -1,4 +1,3 @@
-// src/components/AddExercise.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -7,17 +6,27 @@ const AddExercise = () => {
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [date, setDate] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Basic validation
+    if (!userId || !description || !duration || !date) {
+      setError('All fields are required');
+      return;
+    }
+
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/${userId}/exercises`,
-        { description, duration, date }
+        `http://localhost:5000/api/users/${userId}/exercises`, // Make sure this matches the backend route
+        { description, duration, date } // Send only the exercise details in the body
       );
       console.log('Exercise added:', response.data);
+      setError(''); // Reset error on successful submission
     } catch (error) {
       console.error('There was an error adding the exercise:', error);
+      setError('There was an error adding the exercise.');
     }
   };
 
@@ -50,6 +59,7 @@ const AddExercise = () => {
         />
         <button type="submit">Submit</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };

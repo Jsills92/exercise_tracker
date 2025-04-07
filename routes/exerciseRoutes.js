@@ -1,19 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const { getExercises, addExercise, deleteExercise, updateExercise } = require('../controllers/exerciseController');
+const { getExercises, getExercisesByUser, addExercise, deleteExercise, updateExercise } = require('../controllers/exerciseController');
 const { createUser } = require('../controllers/userController');
 
-// Get all exercises
+// ✅ Create a new user
+router.post('/users', createUser);
+
+// Get all exercises for a specific user
+router.get('/users/:user_id/logs', getExercisesByUser);
+
 router.get('/exercises', getExercises);
 
+
 // Add a new exercise
-router.post('/exercises', addExercise);
+router.post('/users/:user_id/exercises', addExercise); // Add an exercise for a specific user
 
 // Delete an exercise
 router.delete('/exercises/:id', deleteExercise);
 
 // Update an exercise by ID
-router.put('/exercises/:id', updateExercise)
-
+router.put('/exercises/:id', updateExercise);
 
 module.exports = router;
