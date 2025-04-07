@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getExercises, addExercise, deleteExercise, updateExercise } = require('../controllers/exerciseController');
+const { createUser } = require('../controllers/userController');
 
 // Get all exercises
 router.get('/exercises', getExercises);
