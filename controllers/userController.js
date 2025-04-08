@@ -8,7 +8,13 @@ const createUser = async (req, res) => {
       'INSERT INTO users (username) VALUES ($1) RETURNING *',
       [username]
     );
-    res.json(result.rows[0]);
+
+    const user = result.rows[0];
+
+    res.json({
+      username: user.username,
+      _id: user.id  // Map your database `id` to `_id` as expected by FCC
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });

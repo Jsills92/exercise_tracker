@@ -28,20 +28,47 @@ const getExercisesByUser = async (req, res) => {
 
 //Add a new exercise
 const addExercise = async (req, res) => {
-    const { user_id } = req.params;  // Extract user_id from the route parameters
-    const { description, duration } = req.body; // user_id will come from the URL
+    const { user_id } = req.params;
+    let { description, duration, date } = req.body;
+
+    if (!description || !duration) {
+        return res.status(400).json({ error: 'Description and duration are required' });
+    }
+
+    if (!date) {
+        date = new Date().toISOString().split('T')[0];
+    }
 
     try {
-        const result = await pool.query(
-            'INSERT INTO exercises (user_id, description, duration) VALUES ($1, $2, $3) RETURNING *',
-            [user_id, description, duration]
+        // Insert exercise
+        const insertResult = await pool.query(
+            'INSERT INTO exercises (user_id, description, duration, date) VALUES ($1, $2, $3, $4) RETURNING *',
+            [user_id, description, duration, date]
         );
-        res.status(201).json(result.rows[0]);
+
+        // Fetch user to get username
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [user_id]);
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const user = userResult.rows[0];
+        const exercise = insertResult.rows[0];
+
+        res.status(201).json({
+            _id: user.id,
+            username: user.username,
+            date: new Date(exercise.date).toDateString(),
+            duration: Number(exercise.duration),
+            description: exercise.description
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 };
+
 
 
 //Delete a new exercise
