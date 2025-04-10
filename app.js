@@ -6,12 +6,18 @@ const exerciseRoutes = require('./routes/exerciseRoutes');
 
 // Allow only the frontend URL to make requests
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5000'], // Adjust if your frontend is deployed elsewhere
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Define allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
+  origin: [
+    'http://localhost:3000', // Localhost
+    'http://localhost:5000', // Localhost
+    'https://exercise-tracker-app-5e089126146e.herokuapp.com', // Heroku
+    'https://3000-jsills92-exercisetracke-8e7lqnyyadr.ws-us118.gitpod.io' // Gitpod URL
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions)); // Apply CORS configuration
+
 app.use(express.json()); // To parse JSON bodies
 app.options('*', cors(corsOptions)); // Handle OPTIONS requests
 
@@ -20,7 +26,7 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
 // Set Content Security Policy for fonts
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src 'none'; font-src 'self' http://localhost:5000");
+  res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' https://exercise-tracker-app-5e089126146e.herokuapp.com");
   next();
 });
 
