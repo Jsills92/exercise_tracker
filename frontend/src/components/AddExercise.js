@@ -19,7 +19,7 @@ const AddExercise = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/${userId}/exercises`, // Make sure this matches the backend route
+        `https://exercise-tracker-app-5e089126146e.herokuapp.com/api/users/${userId}/exercises`, // Make sure this matches the backend route
         { description, duration, date } // Send only the exercise details in the body
       );
       console.log('Exercise added:', response.data);

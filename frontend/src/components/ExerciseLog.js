@@ -8,7 +8,7 @@ const ExerciseLog = ({ userId }) => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/${userId}/logs`);
+        const response = await axios.get(`https://exercise-tracker-app-5e089126146e.herokuapp.com/api/users/${userId}/logs`);
         setExercises(response.data);
       } catch (error) {
         console.error('Error fetching exercises:', error);

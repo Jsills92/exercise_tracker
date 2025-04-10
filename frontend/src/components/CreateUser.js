@@ -10,7 +10,7 @@ const CreateUser = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:5000/api/users', {
+      const response = await axios.post('https://exercise-tracker-app-5e089126146e.herokuapp.com/api/users', {
         username
       });
   
