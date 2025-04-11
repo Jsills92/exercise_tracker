@@ -4,8 +4,6 @@ const path = require('path');
 const app = express();
 const exerciseRoutes = require('./routes/exerciseRoutes');
 
-app.use(cors(corsOptions)); // Apply CORS configuration
-
 // Allow only the frontend URL to make requests
 const corsOptions = {
   origin: [
