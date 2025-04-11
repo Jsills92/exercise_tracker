@@ -4,11 +4,14 @@ const path = require('path');
 const app = express();
 const exerciseRoutes = require('./routes/exerciseRoutes');
 
+app.use(cors(corsOptions)); // Apply CORS configuration
+
 // Allow only the frontend URL to make requests
 const corsOptions = {
   origin: [
     'http://localhost:3000', // Localhost
     'http://localhost:5000', // Localhost
+    'http://172.21.224.1:3000',
     'https://exercise-tracker-app-5e089126146e.herokuapp.com', // Heroku
     'https://3000-jsills92-exercisetracke-8e7lqnyyadr.ws-us118.gitpod.io' // Gitpod URL
   ],
