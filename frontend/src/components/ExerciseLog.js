@@ -9,16 +9,20 @@ const ExerciseLog = ({ userId }) => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(`https://exercise-tracker-app-5e089126146e.herokuapp.com/api/users/${userId}/logs`);
-        setExercises(response.data);
+        const log = response.data.log || [];
+        setExercises(log);
       } catch (error) {
         console.error('Error fetching exercises:', error);
+        setExercises([]);
       }
     };
-
+  
     if (userId) {
       fetchExercises();
     }
   }, [userId]);
+  
+  
 
   return (
     <div>
@@ -27,8 +31,8 @@ const ExerciseLog = ({ userId }) => {
         <p>No exercises logged yet.</p>
       ) : (
         <ul>
-          {exercises.map((exercise) => (
-            <li key={exercise.id}>
+          {exercises.map((exercise,index) => (
+            <li key={index}>
               {exercise.description} - {exercise.duration} minutes - {exercise.date}
             </li>
           ))}

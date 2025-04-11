@@ -13,58 +13,39 @@ const getExercises = async (req, res) => {
 // Get exercise by user
 const getExercisesByUser = async (req, res) => {
     const { user_id } = req.params;
-    const { from, to, limit } = req.query;
   
     try {
-      const userResult = await pool.query(
-        'SELECT username FROM users WHERE id = $1',
-        [user_id]
-      );
+      const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [user_id]);
   
       if (userResult.rows.length === 0) {
         return res.status(404).json({ error: 'User not found' });
       }
   
-      let query = 'SELECT description, duration, date FROM exercises WHERE user_id = $1';
-      const params = [user_id];
-      let i = 2;
+      const exerciseResult = await pool.query(
+        'SELECT description, duration, date FROM exercises WHERE user_id = $1',
+        [user_id]
+      );
   
-      if (from) {
-        query += ` AND date >= $${i++}`;
-        params.push(new Date(from));
-      }
-  
-      if (to) {
-        query += ` AND date <= $${i++}`;
-        params.push(new Date(to));
-      }
-  
-      query += ' ORDER BY date ASC';
-  
-      if (limit) {
-        query += ` LIMIT $${i}`;
-        params.push(limit);
-      }
-  
-      const exerciseResult = await pool.query(query, params);
-  
-      const logs = exerciseResult.rows.map(e => ({
-        description: e.description,
-        duration: Number(e.duration),
-        date: new Date(e.date).toDateString()
+      const log = exerciseResult.rows.map(ex => ({
+        description: ex.description,
+        duration: ex.duration,
+        date: new Date(ex.date).toDateString()
       }));
   
+      const user = userResult.rows[0];
+  
       res.json({
-        _id: user_id,
-        username: userResult.rows[0].username,
-        count: logs.length,
-        log: logs
+        username: user.username,
+        count: log.length,
+        _id: user.id,
+        log
       });
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+      console.error(err);
+      res.status(500).json({ error: 'Server error' });
     }
   };
+  
   
 
 //Add a new exercise
