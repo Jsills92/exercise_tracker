@@ -3,6 +3,10 @@ const pool = require('../db/db');
 const createUser = async (req, res) => {
   const { username } = req.body;
 
+  if (!username) {
+    return res.status(400).json({ error: 'Username is required' });
+  }
+
   try {
     const result = await pool.query(
       'INSERT INTO users (username) VALUES ($1) RETURNING *',

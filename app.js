@@ -19,6 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Apply CORS configuration
 
 app.use(express.json()); // To parse JSON bodies
+app.use(express.urlencoded({ extended: true }));
 app.options('*', cors(corsOptions)); // Handle OPTIONS requests
 
 // Serve static files (like fonts) from the 'resources' folder
