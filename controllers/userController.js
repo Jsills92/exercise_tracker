@@ -17,11 +17,11 @@ const createUser = async (req, res) => {
 
     res.json({
       username: user.username,
-      _id: user.id  // Map your database `id` to `_id` as expected by FCC
+      _id: user.id,  // Return the user ID as _id as per FCC spec
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    console.error('Error creating user:', err);  // More detailed error logging
+    res.status(500).json({ error: 'Failed to create user' });
   }
 };
 
