@@ -1,8 +1,23 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 const app = express();
 const exerciseRoutes = require('./routes/exerciseRoutes');
+
+// Apply helmet first
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      "default-src": ["'self'"],
+      "font-src": ["'self'", "https://exercise-tracker-app-5e089126146e.herokuapp.com"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'", "https://fonts.googleapis.com"],
+      "connect-src": ["'self'"]
+    }
+  }
+}));
 
 // Allow only the frontend URL to make requests
 const corsOptions = {
