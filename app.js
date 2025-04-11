@@ -28,9 +28,13 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
 // Set Content Security Policy for fonts
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' https://exercise-tracker-app-5e089126146e.herokuapp.com;");
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com;"
+  );
   next();
 });
+
 
 
 // Define your routes
