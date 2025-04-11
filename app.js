@@ -30,10 +30,11 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')));
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com;"
+    "default-src 'self'; font-src 'self' https://exercise-tracker-app-5e089126146e.herokuapp.com; script-src 'self'; style-src 'self' https://fonts.googleapis.com; connect-src 'self';"
   );
   next();
 });
+
 
 
 
