@@ -41,6 +41,12 @@ app.options('*', cors(corsOptions)); // Handle OPTIONS requests
 // Serve static files (like fonts) from the 'resources' folder
 app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
+app.use(express.static(path.join(__dirname, 'client/build'))); // or 'frontend/build'
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html')); // or 'frontend/build'
+});
+
 // Set Content Security Policy for fonts
 app.use((req, res, next) => {
   res.setHeader(
